@@ -6,11 +6,11 @@ const router = express.Router()
 
 router.route('/api/notices')
     .get(NoticeController.findAllNotices)
-    .post([isLogin, isAdmin],NoticeController.createNotice)
+    //.post([isLogin, isAdmin],NoticeController.createNotice)
 
 router.route('/api/notices/:idNotice')
-    .get([isLogin, isAdmin],NoticeController.findByNoticeId)
+    /*.get([isLogin, isAdmin],NoticeController.findByNoticeId)
     .patch([isLogin, isAdmin],NoticeController.editNotice)
-    .delete([isLogin, isAdmin],NoticeController.deleteNotice)
+    .delete([isLogin, isAdmin],NoticeController.deleteNotice)*/
 
 export default router
