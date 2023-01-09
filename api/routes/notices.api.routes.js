@@ -12,9 +12,9 @@ router.route('/api/notices')
     .get(NoticeController.findAllNotices)
     .post(upload.single('image'),NoticeController.createNotice)
 
-router.route('/api/notices/:idNotice')
+/*router.route('/api/notices/:idNotice')
     .get([isLogin, isAdmin],NoticeController.findByNoticeId)
     .patch([isLogin, isAdmin],NoticeController.editNotice)
-    .delete([isLogin, isAdmin],NoticeController.deleteNotice)
+    .delete([isLogin, isAdmin],NoticeController.deleteNotice)*/
 
 export default router

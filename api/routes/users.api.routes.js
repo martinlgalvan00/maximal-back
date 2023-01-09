@@ -20,9 +20,9 @@ router.route('/api/users')
     .post(usersController.createUser)
 
 //Para encontrar y/o eliminar un usuario
-router.route('/api/user/:userId')
+/*router.route('/api/user/:userId')
     .get([isLogin, isAdmin],usersController.getUserById)
-    .delete([isLogin, isAdmin],usersController.removeUser)
+    .delete([isLogin, isAdmin],usersController.removeUser)*/
 
 
 
