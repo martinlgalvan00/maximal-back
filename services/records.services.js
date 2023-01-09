@@ -4,6 +4,23 @@ const client = new MongoClient('mongodb://127.0.0.1:27017')
 const db = client.db('MAXIMAL_STRCORP')
 const records = db.collection('Records')
 
+/*async function getAllRecords(){
+
+    const pipeline = [
+        {$match:{ BodyweightKg: {$lte: 52},Sex:"M",Event:"SBD", Equipment: "Raw"}},
+        {$group:{_id:"$_id", recordSquat: {$max: "$Best3SquatKg"}, recordDeadlift: {$max: "$Best3DeadliftKg"}, recordBench: {$max: "$Best3BenchKg"} }},
+        {$sort: {recordSquat: -1}},
+        {$limit: 3}
+        ]
+
+    return client.connect()
+        .then(function(){
+            return records.aggregate(pipeline).toArray();
+
+        })
+        
+}*/
+
 async function getSquatRecords(clase, category, sex){
     return client.connect()
         .then(function(){
