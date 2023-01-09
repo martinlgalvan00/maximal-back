@@ -1,19 +1,6 @@
 
 import * as RecordsServices from '../../services/records.services.js'
 
-function findRecords(req, res){
-
-    RecordsServices.getAllRecords()
-    .then(function(record){
-        if(record){
-            res.status(200).json(record)
-        } else{
-            res.status(404).json({message: "Records no encontrados."})
-        }
-    })
-
-}
-
 function findRecords52(req, res){
 
     const clase = req.params.idClase
@@ -44,18 +31,7 @@ function findRecords52(req, res){
 
 
 
-function findRecords56(req, res){
 
-    RecordsServices.getAllRecords(56)
-    .then(function(record){
-        if(record){
-            res.status(200).json(record)
-        } else{
-            res.status(404).json({message: "Records no encontrados."})
-        }
-    })
-
-}
 
 function findByRecordId(req, res){
     const id = req.params.idRecord
@@ -73,8 +49,6 @@ function findByRecordId(req, res){
 
 
 export {
-    findRecords,
     findRecords52,
-    findRecords56,
     findByRecordId,
 }

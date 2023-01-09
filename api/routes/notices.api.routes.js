@@ -1,6 +1,6 @@
 import express from 'express'
 import * as NoticeController from '../controllers/notices.api.controllers.js'
-import {isLogin, isAdmin} from '../middleware/auth.middleware.js'
+//import {isLogin, isAdmin} from '../middleware/auth.middleware.js'
 
 const router = express.Router()
 
