@@ -1,9 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 
-import NoticesApiRoute from './routes/notices.api.routes.js'
-import UsersApiRoute from './routes/users.api.routes.js'
-import RecordsApiRoute from './routes/records.api.routes.js'
+import NoticesApiRoute from './api/routes/notices.api.routes.js'
+import UsersApiRoute from './api/routes/users.api.routes.js'
+import RecordsApiRoute from './api/routes/records.api.routes.js'
 
 const app = express()
 
