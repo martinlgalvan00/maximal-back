@@ -22,25 +22,25 @@ function findRecords52(req, res){
     const sex = req.params.idSex
     const exercise = req.params.sort
 
-    const eqUno = req.params.eqUno
-    const eqDos = req.params.eqDos
+    /*const eqUno = req.params.eqUno
+    const eqDos = req.params.eqDos*/
 
 
 
     if(exercise === "squat"){
-        RecordsServices.getSquatRecords(claseParsed, category, sex, eqUno, eqDos)
+        RecordsServices.getSquatRecords(claseParsed, category, sex)
         .then(function(record){ if(record){ res.status(200).json(record) } })
 
     } if(exercise === "bench"){
-        RecordsServices.getBenchRecords(claseParsed, category, sex, eqUno, eqDos)
+        RecordsServices.getBenchRecords(claseParsed, category, sex)
         .then(function(record){ if(record){ res.status(200).json(record) } })
 
     } if(exercise === "deadlift"){
-        RecordsServices.getBenchRecords(claseParsed, category, sex, eqUno, eqDos)
+        RecordsServices.getBenchRecords(claseParsed, category, sex)
         .then(function(record){ if(record){ res.status(200).json(record) } })
 
     } if(exercise === "total"){
-        RecordsServices.getTotalRecords(claseParsed, category, sex, eqUno, eqDos)
+        RecordsServices.getTotalRecords(claseParsed, category, sex)
         .then(function(record){ if(record){ res.status(200).json(record) } })
     }
 
