@@ -1,7 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb'
 
 const client = new MongoClient('mongodb://martin:onenote11@168.197.48.203/')
-const db = client.db('DB_T')
+const db = client.db('MAXIMAL_STRCORP')
 const tokens = db.collection('Tokens')
 
 async function create(token) {

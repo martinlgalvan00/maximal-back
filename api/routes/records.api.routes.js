@@ -8,7 +8,7 @@ router.route('/api/records')
     .get(RecordsController.findRecords)
 
 
-router.route('/api/records/:sort/:clase/:idCategory/:idSex/:eqUno/:eqDos')
+router.route('/api/records/:sort/:clase/:idCategory/:idSex')
     .get(RecordsController.findRecords52)
 
 
