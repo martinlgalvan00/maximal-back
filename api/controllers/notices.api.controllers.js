@@ -28,8 +28,13 @@ function createNotice(req, res){
     const notice = {
         name: req.body.name,
         description: req.body.description,
-        imagen: req.body.description
+        form: req.body.form,
+        image: req.body.image
     }
+
+    /*if(req.file){
+        notice.image = req.file.path
+    }*/
 
     //Guardo la noticia
 
@@ -52,8 +57,12 @@ function editNotice(req, res){
         notice.description = req.body.description
     } 
 
-    if(req.body.imagen){
-        notice.imagen = req.body.imagen
+    if(req.body.form){
+        notice.form = req.body.form
+    } 
+
+    if(req.body.image){
+        notice.image = req.body.image
     } 
 
 
