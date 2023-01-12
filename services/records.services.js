@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb'
 
-const client = new MongoClient('mongodb://martin:onenote11@168.197.48.203/')
+const client = new MongoClient('mongodb://martinlgalvan:Onenote11@168.197.48.203:27017/')
 const db = client.db('MAXIMAL_STRCORP')
 const records = db.collection('Records')
 
