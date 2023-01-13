@@ -17,7 +17,7 @@ function findRecords(req, res){
 function findRecords52(req, res){
 
     const clase = req.params.clase
-    const claseParsed = parseInt(clase)
+    const claseParsed = parseFloat(clase)
     const category = req.params.idCategory
     const sex = req.params.idSex
     const exercise = req.params.sort
