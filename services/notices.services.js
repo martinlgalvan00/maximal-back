@@ -46,15 +46,6 @@ async function deleteNotice(id){
 }
 
 
-
-
-
-
-
-
-
-
-
 export {
     getAllNotices,
     getNoticeById,
