@@ -1,7 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb'
 
 const client = new MongoClient('mongodb://m4rt1n:S0YM4RT1N@62.72.51.41:27017/')
-const db = client.db('MAXIMAL_STRCORP')
+const db = client.db('TOM') //LE ERRÉ A LA HORA DE PONER EL NOMBRE, POR LO QUE EN VEZ DE MAXIMAL_SRTCORP ES TOM
 const records = db.collection('Records')
 
 async function getSquatRecords(clase, category, sex){
