@@ -1,7 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb'
 import bcrypt from 'bcrypt'
 
-const client = new MongoClient('mongodb://g4lv4n:S0YG4LV4N22@191.96.31.180:27017/')
+const client = new MongoClient('mongodb://m4rt1n:S0YM4RT1N@62.72.51.41:27017/')
 const db = client.db('MAXIMAL_STRCORP')
 const users = db.collection('Users')
 
