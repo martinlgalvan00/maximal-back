@@ -2,7 +2,7 @@ import { MongoClient, ObjectId } from 'mongodb'
 import bcrypt from 'bcrypt'
 
 const client = new MongoClient('mongodb://m4rt1n:S0YM4RT1N@62.72.51.41:27017/')
-const db = client.db('TOM')
+const db = client.db('MAXIMAL_STRCORP')
 const users = db.collection('Users')
 
 async function findById(id) {
