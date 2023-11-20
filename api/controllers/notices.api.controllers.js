@@ -1,6 +1,8 @@
 
 import * as NoticeServices from '../../services/notices.services.js'
 
+import { upload } from '../middleware/upload.middleware.js'
+
 function findAllNotices(req, res){
 
     NoticeServices.getAllNotices()
@@ -29,6 +31,11 @@ function createNotice(req, res){
         name: req.body.name,
         description: req.body.description,
         form: req.body.form,
+        image: req.body.image
+    }
+
+    if(req.file){
+        notice.image = req.file.path
     }
 
     //Guardo la noticia
