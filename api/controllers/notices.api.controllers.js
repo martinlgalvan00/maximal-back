@@ -42,6 +42,8 @@ function createNotice(req, res){
     NoticeServices.createNotice(notice)
         .then(function(notice){
             res.status(201).json(notice)
+            console.log(res)
+            
         })
 }
 
