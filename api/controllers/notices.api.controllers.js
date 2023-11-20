@@ -31,14 +31,13 @@ function createNotice(req, res){
         name: req.body.name,
         description: req.body.description,
         form: req.body.form,
+        image: req.files
     }
 
-    if(req.file){
-        notice.image = req.file.path; 
-    }
+
 
     //Guardo la noticia
-
+    console.log(notice)
     NoticeServices.createNotice(notice)
         .then(function(notice){
             res.status(201).json(notice)
