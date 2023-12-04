@@ -10,7 +10,7 @@ const router = express.Router()
 
 router.route('/api/notices/')
     .get(NoticeController.findAllNotices)
-    .post(upload.array('image'),NoticeController.createNotice)
+    .post(upload.array('file'),NoticeController.createNotice)
 
 router.route('/api/notices/:idNotice/')
     .get([isLogin, isAdmin],NoticeController.findByNoticeId)

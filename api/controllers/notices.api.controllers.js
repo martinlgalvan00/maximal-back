@@ -31,7 +31,7 @@ function createNotice(req, res){
         name: req.body.name,
         description: req.body.description,
         form: req.body.form,
-        image: req.files
+        file: req.file
     }
 
 
@@ -40,8 +40,7 @@ function createNotice(req, res){
     console.log(notice)
     NoticeServices.createNotice(notice)
         .then(function(notice){
-            res.status(201).json(notice)
-            console.log(res)
+            console.log(notice)
             
         })
 }
