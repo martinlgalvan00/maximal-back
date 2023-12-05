@@ -42,7 +42,7 @@ function createNotice(req, res){
     }
 
     if(req.file){
-        notice.name = req.file
+        notice.image = req.file
     }
 
     NoticeServices.createNotice(notice)
