@@ -31,19 +31,18 @@ function createNotice(req, res){
         name: req.body.name,
         description: req.body.description,
         form: req.body.form,
-        file: req.file
+        image: req.file
     }
 
-
-
-    //Guardo la noticia
-    console.log(notice)
     NoticeServices.createNotice(notice)
         .then(function(notice){
-            console.log(notice)
-            
+            if(notice){
+                res.status(200).json(notice)
+            } else{
+                res.status(404).json({message: "Noticia no creada."})
+            }
         })
-}
+    }
 
 function editNotice(req, res){
     const id = req.params.idNotice
