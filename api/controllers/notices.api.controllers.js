@@ -41,9 +41,9 @@ function createNotice(req, res){
         notice.form = req.body.form
     }
 
-    /*if(req.file){
+    if(req.file){
         notice.name = req.file
-    }*/
+    }
 
     NoticeServices.createNotice(notice)
         .then(function(notice){
