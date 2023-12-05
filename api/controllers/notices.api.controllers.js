@@ -27,12 +27,23 @@ function findByNoticeId(req, res){
 
 function createNotice(req, res){
 
-    const notice = {
-        name: req.body.name,
-        description: req.body.description,
-        form: req.body.form,
-        image: req.file
+    const notice = {}
+
+    if(req.body.name){
+        notice.name = req.body.name
     }
+
+    if(req.body.description){
+        notice.description = req.body.description
+    }
+
+    if(req.body.form){
+        notice.form = req.body.form
+    }
+
+    /*if(req.file){
+        notice.name = req.file
+    }*/
 
     NoticeServices.createNotice(notice)
         .then(function(notice){
