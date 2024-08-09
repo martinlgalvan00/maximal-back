@@ -49,7 +49,7 @@ function createBlog(req, res){
     }
 
 function editBlog(req, res){
-    const id = req.params.idBlog
+    const id = req.params.id_blog
 
     const blog = {}
 
