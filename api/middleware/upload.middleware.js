@@ -1,32 +1,33 @@
-import multer from 'multer'
+import multer from 'multer';
+import path from 'path';
 
-let storage = multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null,"uploads")
+// Configuración de almacenamiento para multer
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Directorio donde se guardarán los archivos
     },
-    filename: function(req, file, cb){
-        cb(null, `${Date.now()}&${file.originalname}`)
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)); // Nombre del archivo
     }
-})
-    
-    let upload = multer ({
-        storage: storage,
-        fileFilter: function(req, file, callback){
-            if(file.mimetype == "image/png" || file.mimetype == "image/jpeg" )
-                {
-                callback(null, true)
-                } else{
-                    console.log('Solo pueden cargarse imagenes!')
-                    callback(null, false)
-                }
-        },
-        limits:{
-            fileSize: 1024 * 1024 * 2
-        }
-    })
+});
 
+// Filtro de archivos para asegurarnos que solo se suban imágenes
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
 
+    if (mimetype && extname) {
+        return cb(null, true);
+    } else {
+        cb(new Error('Solo se permiten imágenes'));
+    }
+};
 
-export {
-    upload
-}
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 1024 * 1024 * 5 }, // 5MB límite de tamaño de archivo
+    fileFilter: fileFilter
+});
+
+export { upload };

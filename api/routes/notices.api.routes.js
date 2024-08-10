@@ -18,14 +18,13 @@ router.route('/api/notices/:idNotice/')
     .patch([isLogin, isAdmin],NoticeController.editNotice)
     .delete([isLogin, isAdmin],NoticeController.deleteNotice)
 
-router.route('/api/blog/')
-    .get(BlogController.findAllBlogs)
-    .post(BlogController.createBlog)
-
 router.route('/api/blog/:id_blog/')
-    .get([isLogin, isAdmin],BlogController.findByBlogId)
-    .patch([isLogin, isAdmin],BlogController.editBlog)
-    .delete([isLogin, isAdmin],BlogController.deleteBlog)
+    .get([isLogin, isAdmin], BlogController.findByBlogId)
+    .patch([isLogin, isAdmin, upload.single('image')], BlogController.editBlog)
+    .delete([isLogin, isAdmin], BlogController.deleteBlog);
+
+router.route('/api/blog')
+    .post([ upload.single('image')], BlogController.createBlog);
 
 
 export default router
