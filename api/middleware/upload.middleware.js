@@ -4,7 +4,7 @@ import path from 'path';
 // Configuración de almacenamiento para multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Directorio donde se guardarán los archivos
+        cb(null, 'api/uploads/'); // Directorio donde se guardarán los archivos
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Nombre del archivo
