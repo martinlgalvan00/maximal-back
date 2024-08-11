@@ -1,5 +1,22 @@
 import * as BlogService from '../../services/blog.services.js';
 import { upload } from '../middleware/upload.middleware.js';
+import cloudinary from 'cloudinary';
+import fs from 'fs';
+
+import dotenv from 'dotenv';
+dotenv.config();
+
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+console.log('Cloudinary Config:', {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 function findAllBlogs(req, res) {
     BlogService.getAllBlogs()
@@ -21,7 +38,7 @@ function findByBlogId(req, res) {
         });
 }
 
-function createBlog(req, res) {
+async function createBlog(req, res) {
     let blog;
 
     try {
@@ -35,31 +52,28 @@ function createBlog(req, res) {
     try {
         // Manejar la imagen si se envía
         if (req.file) {
-            blog.image = req.file.filename;  // Suponiendo que uses multer para manejar las imágenes
+            const result = await cloudinary.v2.uploader.upload(req.file.path, { folder: 'blogs/' });
+            blog.image = result.secure_url;
+
+            // Eliminar el archivo temporal después de subirlo a Cloudinary
+            fs.unlinkSync(req.file.path);
         } else {
             console.warn('No se envió ninguna imagen en la solicitud.');
         }
 
-        BlogService.createBlog(blog)
-            .then(function (createdBlog) {
-                if (createdBlog) {
-                    res.status(200).json(createdBlog);
-                } else {
-                    console.error('Error al crear el blog: Operación fallida.');
-                    res.status(500).json({ message: "Blog no creado." });
-                }
-            })
-            .catch(function (error) {
-                console.error('Error al interactuar con el servicio de blog:', error);
-                res.status(500).json({ message: 'Error al interactuar con el servicio de blog.' });
-            });
+        const createdBlog = await BlogService.createBlog(blog);
+        if (createdBlog) {
+            res.status(200).json(createdBlog);
+        } else {
+            console.error('Error al crear el blog: Operación fallida.');
+            res.status(500).json({ message: "Blog no creado." });
+        }
     } catch (error) {
-        console.error('Error general al procesar la solicitud de creación del blog:', error);
-        res.status(500).json({ message: 'Error general al procesar la solicitud de creación del blog.' });
+        console.error('Error al interactuar con Cloudinary o el servicio de blog:', error);
+        res.status(500).json({ message: 'Error al procesar la solicitud de creación del blog.' });
     }
 }
-
-function editBlog(req, res) {
+async function editBlog(req, res) {
     const id = req.params.id_blog;
     let blog;
 
@@ -70,22 +84,26 @@ function editBlog(req, res) {
         return res.status(400).json({ message: 'Datos del blog mal formateados.' });
     }
 
-    // Manejar la imagen si se envía
-    if (req.file) {
-        blog.image = req.file.filename;  // Suponiendo que uses multer para manejar las imágenes
-    }
+    try {
+        if (req.file) {
+            const result = await cloudinary.v2.uploader.upload(req.file.path, { folder: 'blogs/' });
+            blog.image = result.secure_url;
 
-    BlogService.editBlog(id, blog)
-        .then(function () {
-            return BlogService.getBlogById(id);
-        })
-        .then(function (updatedBlog) {
-            if (updatedBlog) {
-                res.status(200).json({ message: "Blog modificado con éxito." });
-            } else {
-                res.status(404).json({ message: "Blog no encontrado." });
-            }
-        });
+            // Eliminar el archivo temporal después de subirlo a Cloudinary
+            fs.unlinkSync(req.file.path);
+        }
+
+        await BlogService.editBlog(id, blog);
+        const updatedBlog = await BlogService.getBlogById(id);
+        if (updatedBlog) {
+            res.status(200).json({ message: "Blog modificado con éxito." });
+        } else {
+            res.status(404).json({ message: "Blog no encontrado." });
+        }
+    } catch (error) {
+        console.error('Error al interactuar con Cloudinary o el servicio de blog:', error);
+        res.status(500).json({ message: 'Error al procesar la solicitud de modificación del blog.' });
+    }
 }
 
 function deleteBlog(req, res) {
