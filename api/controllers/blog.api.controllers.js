@@ -24,26 +24,39 @@ function findByBlogId(req, res) {
 function createBlog(req, res) {
     let blog;
 
-    // Extraer y parsear los datos JSON enviados en el campo 'data' del FormData
     try {
+        // Extraer y parsear los datos JSON enviados en el campo 'data' del FormData
         blog = JSON.parse(req.body.data);
     } catch (error) {
+        console.error('Error al parsear los datos del blog:', error);
         return res.status(400).json({ message: 'Datos del blog mal formateados.' });
     }
 
-    // Manejar la imagen si se envía
-    if (req.file) {
-        blog.image = req.file.filename;  // Suponiendo que uses multer para manejar las imágenes
-    }
+    try {
+        // Manejar la imagen si se envía
+        if (req.file) {
+            blog.image = req.file.filename;  // Suponiendo que uses multer para manejar las imágenes
+        } else {
+            console.warn('No se envió ninguna imagen en la solicitud.');
+        }
 
-    BlogService.createBlog(blog)
-        .then(function (createdBlog) {
-            if (createdBlog) {
-                res.status(200).json(createdBlog);
-            } else {
-                res.status(500).json({ message: "Blog no creado." });
-            }
-        });
+        BlogService.createBlog(blog)
+            .then(function (createdBlog) {
+                if (createdBlog) {
+                    res.status(200).json(createdBlog);
+                } else {
+                    console.error('Error al crear el blog: Operación fallida.');
+                    res.status(500).json({ message: "Blog no creado." });
+                }
+            })
+            .catch(function (error) {
+                console.error('Error al interactuar con el servicio de blog:', error);
+                res.status(500).json({ message: 'Error al interactuar con el servicio de blog.' });
+            });
+    } catch (error) {
+        console.error('Error general al procesar la solicitud de creación del blog:', error);
+        res.status(500).json({ message: 'Error general al procesar la solicitud de creación del blog.' });
+    }
 }
 
 function editBlog(req, res) {
