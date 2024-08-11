@@ -25,7 +25,7 @@ router.route('/api/blog/:id_blog/')
 
 router.route('/api/blog')
     .get(BlogController.findAllBlogs)
-    .post([isLogin, isAdmin],[ upload.single('image')], BlogController.createBlog);
+    .post([ upload.single('image')], BlogController.createBlog);
 
 
 export default router
