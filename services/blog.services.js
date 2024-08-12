@@ -22,12 +22,14 @@ async function getBlogById(id){
         })
 }
 
-async function createBlog(infoBlog){
+async function createBlog(infoBlog) {
+    // Agregar la fecha y hora actuales
+    infoBlog.createdAt = new Date();
 
     return client.connect()
-        .then(function(){
-            return blog.insertOne(infoBlog)
-        })
+        .then(function() {
+            return blog.insertOne(infoBlog);
+        });
 }
 
 async function editBlog(id, infoBlog){
