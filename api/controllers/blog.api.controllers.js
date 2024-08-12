@@ -75,6 +75,9 @@ async function editBlog(req, res) {
     // Extraer y parsear los datos JSON enviados en el campo 'data' del FormData
     try {
         blog = JSON.parse(req.body.data);
+
+        // Eliminar el campo _id del objeto blog para evitar intentar actualizarlo
+        delete blog._id;
     } catch (error) {
         return res.status(400).json({ message: 'Datos del blog mal formateados.' });
     }
@@ -100,6 +103,7 @@ async function editBlog(req, res) {
         res.status(500).json({ message: 'Error al procesar la solicitud de modificación del blog.' });
     }
 }
+
 
 function deleteBlog(req, res) {
     const id = req.params.id_blog;
