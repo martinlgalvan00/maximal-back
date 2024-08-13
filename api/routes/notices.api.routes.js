@@ -18,26 +18,14 @@ router.route('/api/notices/:idNotice/')
     .patch([isLogin, isAdmin],NoticeController.editNotice)
     .delete([isLogin, isAdmin],NoticeController.deleteNotice)
 
-    router.route('/api/blog')
-    .all(isLogin)  // Aplica autenticación a todos los métodos
-    .get((req, res) => {
-        if (req.query.id_blog) {
-            // Si se proporciona un ID en la query, obtener el blog por ID
-            isAdmin(req, res, () => BlogController.findByBlogId(req, res));
-        } else {
-            // De lo contrario, obtener todos los blogs
-            BlogController.findAllBlogs(req, res);
-        }
-    })
-    .post(upload.single('image'), (req, res) => {
-        BlogController.createBlog(req, res);
-    })
-    .patch(upload.single('image'), (req, res) => {
-        isAdmin(req, res, () => BlogController.editBlog(req, res));
-    })
-    .delete((req, res) => {
-        isAdmin(req, res, () => BlogController.deleteBlog(req, res));
-    });
+router.route('/api/blog/:id_blog/')
+    .get([isLogin, isAdmin], BlogController.findByBlogId)
+    .patch([isLogin, isAdmin, upload.single('image')], BlogController.editBlog)
+    .delete([isLogin, isAdmin], BlogController.deleteBlog);
+
+router.route('/api/blog')
+    .get(BlogController.findAllBlogs)
+    .post([ upload.single('image')], BlogController.createBlog);
 
 
 export default router
