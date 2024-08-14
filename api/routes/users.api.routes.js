@@ -17,7 +17,7 @@ router.route('/api/users/logout')
 
 //Para encontrar usuarios según el id del entrenador, y crearlos
 router.route('/api/users')
-    .post(usersController.createUser)
+    .post(usersController.createUser) //
 
 //Para encontrar y/o eliminar un usuario
 router.route('/api/user/:userId')
