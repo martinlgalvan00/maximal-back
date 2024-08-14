@@ -4,8 +4,9 @@ import * as BlogService from '../../services/blog.services.js';
 
 import cloudinary from 'cloudinary';
 import fs from 'fs';
-
+import streamifier from 'streamifier';
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 cloudinary.v2.config({
@@ -143,9 +144,7 @@ function findByBlogId(req, res) {
 
 async function createBlog(req, res) {
     let blog;
-
     try {
-        // Extraer y parsear los datos JSON enviados en el campo 'data' del FormData
         blog = JSON.parse(req.body.data);
     } catch (error) {
         console.error('Error al parsear los datos del blog:', error);
@@ -153,15 +152,23 @@ async function createBlog(req, res) {
     }
 
     try {
-        // Manejar la imagen si se envía
         if (req.file) {
-            const result = await cloudinary.v2.uploader.upload(req.file.path, { folder: 'blogs/' });
-            blog.image = result.secure_url;
+            // Subir imagen a Cloudinary desde el buffer en memoria
+            const streamUpload = (req) => {
+                return new Promise((resolve, reject) => {
+                    let stream = cloudinary.v2.uploader.upload_stream((error, result) => {
+                        if (result) {
+                            resolve(result);
+                        } else {
+                            reject(error);
+                        }
+                    });
+                    streamifier.createReadStream(req.file.buffer).pipe(stream);
+                });
+            };
 
-            // Eliminar el archivo temporal después de subirlo a Cloudinary
-            fs.unlinkSync(req.file.path);
-        } else {
-            console.warn('No se envió ninguna imagen en la solicitud.');
+            const result = await streamUpload(req);
+            blog.image = result.secure_url;
         }
 
         const createdBlog = await BlogService.createBlog(blog);
@@ -176,27 +183,35 @@ async function createBlog(req, res) {
         res.status(500).json({ message: 'Error al procesar la solicitud de creación del blog.' });
     }
 }
+
 async function editBlog(req, res) {
     const id = req.params.id_blog;
     let blog;
 
-    // Extraer y parsear los datos JSON enviados en el campo 'data' del FormData
     try {
         blog = JSON.parse(req.body.data);
-
-        // Eliminar el campo _id del objeto blog para evitar intentar actualizarlo
-        delete blog._id;
+        delete blog._id; // Evitar intentar actualizar el campo _id
     } catch (error) {
         return res.status(400).json({ message: 'Datos del blog mal formateados.' });
     }
 
     try {
         if (req.file) {
-            const result = await cloudinary.v2.uploader.upload(req.file.path, { folder: 'blogs/' });
-            blog.image = result.secure_url;
+            const streamUpload = (req) => {
+                return new Promise((resolve, reject) => {
+                    let stream = cloudinary.v2.uploader.upload_stream((error, result) => {
+                        if (result) {
+                            resolve(result);
+                        } else {
+                            reject(error);
+                        }
+                    });
+                    streamifier.createReadStream(req.file.buffer).pipe(stream);
+                });
+            };
 
-            // Eliminar el archivo temporal después de subirlo a Cloudinary
-            fs.unlinkSync(req.file.path);
+            const result = await streamUpload(req);
+            blog.image = result.secure_url;
         }
 
         await BlogService.editBlog(id, blog);
