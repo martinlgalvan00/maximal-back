@@ -19,7 +19,7 @@ router.route('/api/notices/:idNotice/')
     .delete([isLogin, isAdmin],NoticeController.deleteNotice)
 
 router.route('/api/blog/:id_blog/')
-    .get([isLogin, isAdmin], NoticeController.findByBlogId)
+    .get(NoticeController.findByBlogId)
     .patch([isLogin, isAdmin, upload.single('image')], NoticeController.editBlog)
     .delete([isLogin, isAdmin], NoticeController.deleteBlog);
 
